@@ -6,6 +6,7 @@
 #include <assert.h>
 
 CVECTOR_NEW(strings_list, char*)
+CVECTOR_NEW(uint8_list, uint8_t)
 
 void strings_list_free_items(strings_list* list) {
     CVECTOR_FOR(list, i) {
@@ -16,10 +17,6 @@ void strings_list_free_items(strings_list* list) {
 void compare_strings(char* str1, char* str2) {
     assert(strlen(str1) == strlen(str2));
     assert(strncmp(str1, str2, strlen(str1)) == 0);
-}
-
-uint32_t strings_list_length(strings_list* list) {
-    return CVECTOR_LENGTH(list);
 }
 
 void test_remove_item() {
@@ -77,8 +74,22 @@ void test_move_item() {
     strings_list_destroy(&list);
 }
 
+void test_list_alloc() {
+    uint8_list* nlist = uint8_list_alloc();
+    assert(nlist != NULL);
+    uint8_t i;
+    for(i = 0; i < 100; i++) {
+        uint8_list_add(nlist, i);
+    }
+    CVECTOR_FOR(nlist, j) {
+        assert(j == CVECTOR_GET(nlist, j));
+    }
+    uint8_list_free(nlist);
+}
+
 int main() {
     test_move_item();
+    test_list_alloc();
     test_find_item_index();
     test_remove_item();
     return 0;

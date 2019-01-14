@@ -69,6 +69,18 @@
         CVECTOR_INIT(list, typename)\
         return CVECTOR_OK;\
     }\
+    listname* listname##_alloc() {\
+        listname* list = malloc(1*sizeof(listname));\
+        listname##_init(list);\
+        return list;\
+    }\
+    void listname##_destroy(listname* list) {\
+        free(list->data);\
+    }\  
+    void listname##_free(listname* list) {\
+        listname##_destroy(list);\
+        free(list);\
+    }\
     int listname##_add(listname* list, typename item) {\
         CVECTOR_ADD(list, item)\
         return CVECTOR_OK;\
@@ -93,9 +105,6 @@
         return -1;\
     }\
     void listname##_free_items(listname* list);\
-    void listname##_destroy(listname* list) {\
-        free(list->data);\
-    }\
     int listname##_insert_at(listname* list, typename item, uint32_t dest) {\
         CVECTOR_INSERT_AT(list, item, dest);\
         return CVECTOR_OK;\
