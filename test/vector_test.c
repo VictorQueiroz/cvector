@@ -1,16 +1,16 @@
-#include "vector.h"
+#include <cvector.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
 #include <assert.h>
 
-CVECTOR_NEW(strings_list, char*)
-CVECTOR_NEW(uint8_list, uint8_t)
+CVECTOR_HEAD(strings_list, char*)
+CVECTOR_HEAD(uint8_list, uint8_t)
 
 void strings_list_free_items(strings_list* list) {
-    CVECTOR_FOR(list, i) {
-        free(CVECTOR_GET(list, i));
+    vector_foreach(list, i) {
+        free(strings_list_get(list, i));
     }
 }
 
@@ -81,8 +81,8 @@ void test_list_alloc() {
     for(i = 0; i < 100; i++) {
         uint8_list_add(nlist, i);
     }
-    CVECTOR_FOR(nlist, j) {
-        assert(j == CVECTOR_GET(nlist, j));
+    vector_foreach(nlist, j) {
+        assert(j == uint8_list_get(nlist, j));
     }
     uint8_list_free(nlist);
 }
@@ -94,3 +94,6 @@ int main() {
     test_remove_item();
     return 0;
 }
+
+CVECTOR_NEW(strings_list, char*)
+CVECTOR_NEW(uint8_list, uint8_t)
