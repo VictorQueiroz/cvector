@@ -76,7 +76,7 @@
     }\
     void listname##_destroy(listname* list) {\
         free(list->data);\
-    }\  
+    }\
     void listname##_free(listname* list) {\
         listname##_destroy(list);\
         free(list);\
