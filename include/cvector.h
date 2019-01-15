@@ -94,6 +94,7 @@
         return list;\
     }\
     void listname##_destroy(listname* list) {\
+        listname##_free_items(list);\
         free(list->data);\
     }\
     void listname##_free(listname* list) {\
