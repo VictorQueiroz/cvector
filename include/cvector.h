@@ -40,10 +40,9 @@
     type* data;
 
 #define CVECTOR_HEAD(listname, typename) \
-    struct _##listname {\
+    typedef struct {\
         CVECTOR_STRUCT_PARAMS(typename)\
-    };\
-    typedef struct _##listname listname;\
+    } listname;\
     int listname##_init(listname* list);\
     listname* listname##_alloc();\
     void listname##_destroy(listname* list);\
