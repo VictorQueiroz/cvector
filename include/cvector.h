@@ -2,6 +2,9 @@
 #define CVECTOR_PUBLIC_HEADER_H
 
 #include <stdint.h>
+#include <string.h>
+
+typedef size_t cvector_size_t;
 
 #define CVECTOR_OK 0
 #define CVECTOR_MEMORY_ALLOCATION_FAILED -1
@@ -30,13 +33,13 @@
 #define CVECTOR_LENGTH(list) list->offset
 
 #define vector_foreach(list, index_var) \
-    uint32_t index_var;\
+    cvector_size_t index_var;\
     for(index_var = 0; index_var < list->offset; index_var++)
 
 #define CVECTOR_STRUCT_PARAMS(type) \
-    uint32_t capacity;\
-    uint32_t offset;\
-    uint32_t item_length;\
+    cvector_size_t capacity;\
+    cvector_size_t offset;\
+    cvector_size_t item_length;\
     type* data;
 
 #define CVECTOR_HEAD(listname, typename) \
@@ -48,17 +51,17 @@
     void listname##_destroy(listname* list);\
     void listname##_free(listname* list);\
     int listname##_add(listname* list, typename item);\
-    uint32_t listname##_length(listname* list);\
-    typename listname##_get(listname* list, uint32_t i);\
-    int listname##_remove(listname* list, uint32_t index);\
-    uint32_t listname##_index_of(listname* list, typename target_item);\
+    cvector_size_t listname##_length(listname* list);\
+    typename listname##_get(listname* list, cvector_size_t i);\
+    int listname##_remove(listname* list, cvector_size_t index);\
+    cvector_size_t listname##_index_of(listname* list, typename target_item);\
     void listname##_free_items(listname* list);\
-    int listname##_insert_at(listname* list, typename item, uint32_t dest);\
-    int listname##_move(listname* list, uint32_t src, uint32_t dest);
+    int listname##_insert_at(listname* list, typename item, cvector_size_t dest);\
+    int listname##_move(listname* list, cvector_size_t src, cvector_size_t dest);
 
 #define CVECTOR_REMOVE(list, index) \
     if(index > (list->offset - 1)) return CVECTOR_INVALID_LIST_OFFSET;\
-    uint32_t i;\
+    cvector_size_t i;\
     for(i = index; i < list->offset - 1; i++) {\
         list->data[i] = list->data[i + 1];\
     }\
@@ -74,7 +77,7 @@
         }\
     }\
     {\
-        uint32_t i;\
+        cvector_size_t i;\
         for(i = index; i < list->offset; i++) {\
             list->data[list->offset - i] = list->data[(list->offset - 1) - i];\
         }\
@@ -105,17 +108,17 @@
         vector_add(list, item)\
         return CVECTOR_OK;\
     }\
-    uint32_t listname##_length(listname* list) {\
+    cvector_size_t listname##_length(listname* list) {\
         return CVECTOR_LENGTH(list);\
     }\
-    typename listname##_get(listname* list, uint32_t i) {\
+    typename listname##_get(listname* list, cvector_size_t i) {\
         return CVECTOR_GET(list, i);\
     }\
-    int listname##_remove(listname* list, uint32_t index) {\
+    int listname##_remove(listname* list, cvector_size_t index) {\
         CVECTOR_REMOVE(list, index)\
         return CVECTOR_OK;\
     }\
-    uint32_t listname##_index_of(listname* list, typename target_item) {\
+    cvector_size_t listname##_index_of(listname* list, typename target_item) {\
         vector_foreach(list, current_index) {\
             typename current_item = CVECTOR_GET(list, current_index);\
             if(current_item == target_item) {\
@@ -124,11 +127,11 @@
         }\
         return -1;\
     }\
-    int listname##_insert_at(listname* list, typename item, uint32_t dest) {\
+    int listname##_insert_at(listname* list, typename item, cvector_size_t dest) {\
         vector_insert_at(list, item, dest);\
         return CVECTOR_OK;\
     }\
-    int listname##_move(listname* list, uint32_t src, uint32_t dest) {\
+    int listname##_move(listname* list, cvector_size_t src, cvector_size_t dest) {\
         typename item = listname##_get(list, src);\
         CVECTOR_SUCCESS_OR_RETURN_ERROR(listname##_remove(list, src));\
         CVECTOR_SUCCESS_OR_RETURN_ERROR(listname##_insert_at(list, item, dest));\
