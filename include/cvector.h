@@ -42,10 +42,12 @@ typedef size_t cvector_size_t;
     cvector_size_t item_length;\
     type* data;
 
-#define CVECTOR_HEAD(listname, typename) \
+#define CVECTOR_HEAD_STRUCT(listname, typename) \
     typedef struct {\
         CVECTOR_STRUCT_PARAMS(typename)\
-    } listname;\
+    } listname;
+
+#define CVECTOR_DECLARATIONS(listname, typename) \
     int listname##_init(listname* list);\
     listname* listname##_alloc();\
     void listname##_destroy(listname* list);\
@@ -58,6 +60,10 @@ typedef size_t cvector_size_t;
     void listname##_free_items(listname* list);\
     int listname##_insert_at(listname* list, typename item, cvector_size_t dest);\
     int listname##_move(listname* list, cvector_size_t src, cvector_size_t dest);
+
+#define CVECTOR_HEAD(listname, typename) \
+    CVECTOR_HEAD_STRUCT(listname, typename)\
+    CVECTOR_DECLARATIONS(listname, typename)
 
 #define CVECTOR_REMOVE(list, index) \
     if(index > (list->offset - 1)) return CVECTOR_INVALID_LIST_OFFSET;\
