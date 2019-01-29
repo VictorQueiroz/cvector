@@ -24,7 +24,7 @@ typedef size_t cvector_size_t;
         return CVECTOR_MEMORY_ALLOCATION_FAILED;\
     }
 
-#define vector_get(l, i) CVECTOR_GET(list, i)
+#define vector_get(l, i) CVECTOR_GET(l, i)
 
 #define vector_push_back(l, i) vector(l, i)
 
